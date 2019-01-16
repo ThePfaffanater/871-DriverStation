@@ -1,0 +1,46 @@
+plugins {
+    id "java"
+    id 'org.openjfx.javafxplugin' version '0.0.6'
+    id "edu.wpi.first.GradleRIO" version "2019.1.1"
+}
+
+
+javafx {
+    modules = [ 'javafx.controls', 'javafx.media' ]
+}
+
+//Not actually the robot...
+def ROBOT_MAIN_CLASS = "main.com.team871.Main"
+
+group 'com.team871'
+version 'unspecified'
+
+sourceCompatibility = 1.8
+
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile 'com.jfoenix:jfoenix:9.0.6',
+            'eu.hansolo:Medusa:8.0',
+            wpi.deps.wpilib()
+    
+    compile name: 'ntcore-jni-4.0.0-all'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+// Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
+// in order to make them all available at runtime. Also adding the manifest so WPILib
+// knows where to look for our Robot Class.
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+}
+
+manifest {
+    attributes('Main-Class': 'main.com.team871.Main')
+}
