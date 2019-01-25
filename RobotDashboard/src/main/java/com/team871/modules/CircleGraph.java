@@ -1,9 +1,8 @@
 package com.team871.modules;
 
-import com.team871.config.ColorMode;
-import com.team871.config.IUpdateable;
-import com.team871.util.IData;
-import com.team871.util.NumericalDataValue;
+import com.team871.config.Style.ColorMode;
+import com.team871.util.data.IData;
+import com.team871.util.data.NumericalDataValue;
 import eu.hansolo.medusa.Gauge;
 import eu.hansolo.medusa.Gauge.ScaleDirection;
 import eu.hansolo.medusa.Gauge.SkinType;
@@ -17,7 +16,7 @@ import javafx.scene.paint.Color;
  * Is a VBOX containing a one dimensional graph
  * Contains various graph templates.
  */
-public class CircleGraph extends VBox implements IUpdateable {
+public class CircleGraph extends VBox {
 
 
     private Gauge gauge;
@@ -66,6 +65,18 @@ public class CircleGraph extends VBox implements IUpdateable {
         this.getChildren().addAll(gauge);
         this.setSpacing(.5);
         this.setAlignment(Pos.CENTER);
+
+        //Updates:
+        colorMode.addListener(observable -> {
+            gauge.setBarColor(colorMode.getPrimaryColor());
+            gauge.setTitleColor(colorMode.getSecondaryColor());
+            gauge.setValueColor(colorMode.getSecondaryColor());
+            gauge.setUnitColor(colorMode.getSecondaryColor());
+        });
+
+        data.addListener((observable, old, newValue) -> {
+            gauge.setValue(newValue);
+        });
     }
 
 
@@ -127,12 +138,4 @@ public class CircleGraph extends VBox implements IUpdateable {
 
     }
 
-    @Override
-    public void update() {
-        gauge.setBarColor(colorMode.getPrimaryColor());
-        gauge.setTitleColor(colorMode.getSecondaryColor());
-        gauge.setValueColor(colorMode.getSecondaryColor());
-        gauge.setValue(data.get());
-
-    }
 }

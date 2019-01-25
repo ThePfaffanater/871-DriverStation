@@ -3,9 +3,6 @@ allprojects {
 
     repositories {
         mavenCentral()
-        flatDir {
-            dirs "$rootDir/lib"
-        }
     }
 
     apply plugin: 'idea'

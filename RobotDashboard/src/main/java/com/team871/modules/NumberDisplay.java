@@ -1,8 +1,7 @@
 package com.team871.modules;
 
-import com.team871.config.ColorMode;
-import com.team871.config.IUpdateable;
-import com.team871.util.IData;
+import com.team871.config.Style.ColorMode;
+import com.team871.util.data.IData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -10,7 +9,7 @@ import javafx.scene.layout.VBox;
 
 import java.text.DecimalFormat;
 
-public class NumberDisplay extends VBox implements IUpdateable {
+public class NumberDisplay extends VBox {
 
     private ColorMode colorMode;
     private IData<Double> data;
@@ -23,7 +22,7 @@ public class NumberDisplay extends VBox implements IUpdateable {
         this.data = data;
 
         nameDisplay = new Label(name + ": ");
-        textArea = new Label(new Double(round(data.get(), 2)).toString());
+        textArea = new Label(Double.toString(round(data.getValue(), 2)));
 
         textArea.setTextFill(colorMode.getSecondaryColor());
         nameDisplay.setTextFill(colorMode.getSecondaryColor());
@@ -31,6 +30,12 @@ public class NumberDisplay extends VBox implements IUpdateable {
         super.getChildren().addAll(nameDisplay, textArea);
         super.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(3, 3, 3, 3));
+
+        //Updates:
+        colorMode.addListener(observable -> {
+            textArea.setTextFill(colorMode.getPrimaryColor());
+            nameDisplay.setTextFill(colorMode.getSecondaryColor());
+        });
     }
 
     private static double round(double value, int places) {
@@ -40,13 +45,5 @@ public class NumberDisplay extends VBox implements IUpdateable {
         value = value * factor;
         long tmp = Math.round(value);
         return (double) tmp / factor;
-    }
-
-    @Override
-    public void update() {
-        textArea.setText(new Double(round(data.get(), 2)).toString());
-        textArea.setTextFill(colorMode.getPrimaryColor());
-        nameDisplay.setTextFill(colorMode.getSecondaryColor());
-
     }
 }

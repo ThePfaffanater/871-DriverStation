@@ -1,5 +1,6 @@
 package com.team871.config;
 
+import com.team871.config.Style.ColorMode;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public interface IDashboardConfig {

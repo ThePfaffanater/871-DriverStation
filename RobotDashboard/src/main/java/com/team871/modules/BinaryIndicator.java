@@ -1,9 +1,8 @@
 package com.team871.modules;
 
 
-import com.team871.config.ColorMode;
-import com.team871.config.IUpdateable;
-import com.team871.util.IData;
+import com.team871.config.Style.ColorMode;
+import com.team871.util.data.IData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,12 +12,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
 
-public class BinaryIndicator extends VBox implements IUpdateable {
+public class BinaryIndicator extends VBox {
 
-    private static javafx.scene.shape.Circle Circle;
-    private static Label Label;
-    ColorMode colorMode;
-    IData<Boolean> data;
+    private javafx.scene.shape.Circle Circle;
+    private Label label;
+    private ColorMode colorMode;
+    private IData<Boolean> data;
     private String title;
 
     /**
@@ -31,11 +30,10 @@ public class BinaryIndicator extends VBox implements IUpdateable {
         this.data = data;
 
 
-
-        Label = new Label(this.title + ":");
-        Label.setTextFill(colorMode.getSecondaryColor());
-        Label.setAlignment(Pos.CENTER);
-        Label.setPadding(new Insets(5, 0, 3, 0));
+        label = new Label(this.title + ":");
+        label.setTextFill(colorMode.getSecondaryColor());
+        label.setAlignment(Pos.CENTER);
+        label.setPadding(new Insets(5, 0, 3, 0));
 
         Label spacer = new Label("   ");
         spacer.setFont(Font.font("Arial", 8));
@@ -45,39 +43,39 @@ public class BinaryIndicator extends VBox implements IUpdateable {
 
         setNeutral();
 
-        this.getChildren().addAll(Label, Circle, spacer);
+        this.getChildren().addAll(label, Circle, spacer);
         this.setPadding(new Insets(3, 3, 3, 3));
         this.setAlignment(Pos.CENTER);
+
+        //Updates:
+        colorMode.addListener(observable -> {
+            label.setTextFill(colorMode.getSecondaryColor());
+        });
+
+        data.addListener((observable, old, newValue) -> {
+            setState(newValue);
+        });
+
+
     }
 
     /**
      * Sets the Indicator to Off position (RED color)
      */
-    private void setOff() {
-        Circle.setFill(Color.RED);
+    private void setState(boolean on) {
+        if (on)
+            Circle.setFill(Color.GREEN);
+
+        else
+            Circle.setFill(Color.RED);
     }
 
     private void setNeutral() {
         Circle.setFill(Color.YELLOW);
     }
 
-    /**
-     * Sets the Indicator to On position (GREEN color);
-     */
-    private void setOn() {
-        Circle.setFill(Color.GREEN);
-    }
 
-    @Override
-    public void update() {
-        Label.setTextFill(colorMode.getSecondaryColor());
 
-        if (data.get()) { //for some odd reason ternary refuses to work here?
-            setOn();
-        } else {
-            setOff();
-        }
 
-    }
 }
 

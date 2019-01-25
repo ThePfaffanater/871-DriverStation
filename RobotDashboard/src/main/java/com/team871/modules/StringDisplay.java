@@ -1,15 +1,14 @@
 package com.team871.modules;
 
-import com.team871.config.ColorMode;
-import com.team871.config.IUpdateable;
-import com.team871.util.IData;
+import com.team871.config.Style.ColorMode;
+import com.team871.util.data.IData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 
-public class StringDisplay extends VBox implements IUpdateable {
+public class StringDisplay extends VBox {
 
     private ColorMode colorMode;
     private IData<String> data;
@@ -21,7 +20,7 @@ public class StringDisplay extends VBox implements IUpdateable {
         this.data = data;
 
         nameDisplay = new Label(name + ": ");
-        textArea = new Label(data.get());
+        textArea = new Label(data.getValue());
 
         textArea.setTextFill(colorMode.getSecondaryColor());
         nameDisplay.setTextFill(colorMode.getSecondaryColor());
@@ -30,13 +29,11 @@ public class StringDisplay extends VBox implements IUpdateable {
         this.setAlignment(Pos.CENTER);
         this.setSpacing(.2);
         this.setPadding(new Insets(3, 3, 3, 3));
-    }
 
-    @Override
-    public void update() {
-        textArea.setText(data.get());
-        textArea.setTextFill(colorMode.getPrimaryColor());
-        nameDisplay.setTextFill(colorMode.getSecondaryColor());
-
+        //Updates:
+        colorMode.addListener(observable -> {
+            textArea.setTextFill(colorMode.getPrimaryColor());
+            nameDisplay.setTextFill(colorMode.getSecondaryColor());
+        });
     }
 }

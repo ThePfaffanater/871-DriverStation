@@ -1,24 +1,25 @@
 package com.team871.modules;
 
-import com.jfoenix.controls.JFXColorPicker;
-import com.jfoenix.controls.JFXSlider;
-import com.team871.config.ColorMode;
-import com.team871.config.IUpdateable;
+import com.team871.config.Style.ColorMode;
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
-public class LedController extends VBox implements IUpdateable {
+public class LedController extends VBox {
 
     private ColorMode colorMode;
     private NetworkTableEntry ledBrightnessKey;
     private NetworkTableEntry ledColorKey;
     private Label titleText;
-    private JFXSlider brightnessSlider;
-    private JFXColorPicker colorPicker;
+    private Slider brightnessSlider;
+    private ColorPicker colorPicker;
     private boolean init;
     private boolean lastDarkMode;
 
@@ -30,10 +31,9 @@ public class LedController extends VBox implements IUpdateable {
         this.init = false;
 
         titleText = new Label(title + ": ");
-        brightnessSlider = new JFXSlider();
-        brightnessSlider.setIndicatorPosition(JFXSlider.IndicatorPosition.LEFT);
+        brightnessSlider = new Slider();
         brightnessSlider.getStylesheets().add("slider_dark.css");
-        colorPicker = new JFXColorPicker();
+        colorPicker = new ColorPicker();
         colorPicker.setScaleX(.75);
         colorPicker.setScaleY(.75);
         colorPicker.setScaleZ(.75);
@@ -46,33 +46,43 @@ public class LedController extends VBox implements IUpdateable {
         this.getChildren().addAll(titleText, brightnessSlider, colorPicker);
         this.setAlignment(Pos.CENTER_LEFT);
         this.setPadding(new Insets(3, 3, 3, 3));
-    }
 
-    @Override
-    public void update() {
-        if (!init) {
-            initialize();
-            init = true;
-        }
-
-        titleText.setTextFill(colorMode.getSecondaryColor());
-
-        if (lastDarkMode != colorMode.isDarkMode()) {
-            if (colorMode.isDarkMode())
-                brightnessSlider.getStylesheets().add("slider_dark.css");
-            else
-                brightnessSlider.getStylesheets().add("slider_light.css");
-
-            lastDarkMode = colorMode.isDarkMode();
-        }
-
-    }
-
-    public void initialize() {
+        //Updates:
         brightnessSlider.valueProperty().addListener((observable, old, newValue) -> {
             if (ledBrightnessKey != null) {
                 ledBrightnessKey.setNumber(newValue.intValue());
             }
         });
+
+        colorMode.addListener(observable -> {
+            titleText.setTextFill(colorMode.getSecondaryColor());
+
+            if (lastDarkMode != colorMode.isDarkMode()) {
+                if (colorMode.isDarkMode()) {
+                    brightnessSlider.getStylesheets().add("slider_dark.css");
+                } else {
+                    brightnessSlider.getStylesheets().add("slider_light.css");
+                }
+
+                lastDarkMode = colorMode.isDarkMode();
+            }
+        });
+
+        ledBrightnessKey.addListener(event -> {
+            try {
+                brightnessSlider.setValue(event.value.getDouble());
+            } catch (ClassCastException e) {
+                System.out.println("TableEntry(" + ledBrightnessKey.getInfo() + ") ERROR: " + e.toString());
+            }
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+        ledColorKey.addListener(event -> {
+            try {
+                colorPicker.setValue(Color.valueOf(event.value.getString()));
+            } catch (ClassCastException e) {
+                System.out.println("TableEntry(" + ledColorKey.getInfo() + ") ERROR: " + e.toString());
+            }
+        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
     }
 }

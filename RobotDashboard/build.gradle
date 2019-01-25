@@ -1,16 +1,23 @@
 plugins {
     id "java"
+    id "application"
     id 'org.openjfx.javafxplugin' version '0.0.6'
     id "edu.wpi.first.GradleRIO" version "2019.1.1"
 }
 
+def MAIN_CLASS = "com.team871.GraphicalMain"
 
-javafx {
-    modules = [ 'javafx.controls', 'javafx.media' ]
+application {
+    mainClassName = MAIN_CLASS
 }
 
-//Not actually the robot...
-def ROBOT_MAIN_CLASS = "main.com.team871.Main"
+
+
+javafx {
+   
+    modules = [ 'javafx.controls', 'javafx.media' ,'javafx.graphics']
+    
+}
 
 group 'com.team871'
 version 'unspecified'
@@ -20,15 +27,26 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven {
+        url 'http://first.wpi.edu/FRC/roborio/maven/release'
+
+    }
+
+
+    flatDir {
+        dirs "$rootDir/lib"
+    }
 }
 
 
 dependencies {
     compile 'com.jfoenix:jfoenix:9.0.6',
             'eu.hansolo:Medusa:8.0',
-            wpi.deps.wpilib()
+             wpi.deps.wpilib()
     
-    compile name: 'ntcore-jni-4.0.0-all'
+    //compile 'edu.wpi.first.ntcore/ntcore-jni:2019.2.1.ntcore-jni-2019.2.1-all'
+
+    compile name: 'ntcore-jni-2019.2.1-all'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
@@ -38,9 +56,9 @@ dependencies {
 // knows where to look for our Robot Class.
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(MAIN_CLASS)
 }
 
 manifest {
-    attributes('Main-Class': 'main.com.team871.Main')
+    attributes('Main-Class': MAIN_CLASS)
 }

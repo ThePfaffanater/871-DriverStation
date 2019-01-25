@@ -1,36 +1,35 @@
 package com.team871.modules;
 
-import com.jfoenix.controls.JFXColorPicker;
-import com.jfoenix.controls.JFXRadioButton;
-import com.team871.config.ColorMode;
+import com.team871.config.Style.ColorModeController;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.HBox;
 
 public class ColorModePicker extends HBox {
 
-    JFXColorPicker colorPicker;
-    JFXRadioButton darkModeBtn;
+    ColorPicker colorPicker;
+    RadioButton darkModeBtn;
 
-    public ColorModePicker(ColorMode colorMode) {
+    public ColorModePicker(ColorModeController colorModeController) {
         super();
-        colorPicker = new JFXColorPicker();
-        darkModeBtn = new JFXRadioButton();
-        //darkModeBtn.setText("Light/Dark Mode");
+        colorPicker = new ColorPicker();
+        darkModeBtn = new RadioButton();
+        darkModeBtn.setText("Light/Dark Mode");
+
+        this.getChildren().addAll(colorPicker, darkModeBtn);
 
         darkModeBtn.setOnAction((ActionEvent event) -> {
-            colorMode.changeColorMode();
+            colorModeController.changeBaseColor();
         });
 
         colorPicker.setOnAction((ActionEvent event) -> {
-            colorMode.setPrimaryColor(colorPicker.getValue());
+            colorModeController.setPrimaryColor(colorPicker.getValue());
         });
 
-        Label Spacer = new Label(" ");
 
-        this.getChildren().addAll(colorPicker, Spacer, darkModeBtn);
         this.setAlignment(Pos.CENTER_LEFT);
         this.setPadding(new Insets(3, 3, 3, 3));
 
