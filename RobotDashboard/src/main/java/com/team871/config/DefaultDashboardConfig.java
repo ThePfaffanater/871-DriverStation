@@ -28,7 +28,7 @@ public class DefaultDashboardConfig implements IDashboardConfig {
    * @param teamNumber the team number recognized by NetworkTables
    */
   public DefaultDashboardConfig(String networkID, int teamNumber) {
-    colorMode = new ColorMode(true);
+    colorMode = new ColorMode(false);
 
     networkTableInstance = NetworkTableInstance.getDefault();
     networkTableInstance.setNetworkIdentity(networkID);

@@ -23,13 +23,42 @@ public class CircleGraph extends VBox {
     private ColorMode colorMode;
     private IData<Double> data;
 
+    public CircleGraph() {
+        colorMode = new ColorMode(false);
+
+        this.gauge = GaugeBuilder
+                .create()
+                .skinType(SkinType.BAR)
+                .title("Null")
+                .unit("Null")
+                .maxSize(200, 200)
+                .minSize(40, 40)
+                .scaleDirection(ScaleDirection.CLOCKWISE)
+                .thresholdVisible(true)
+                .thresholdColor(Color.YELLOW)
+                .threshold(0)
+                .checkThreshold(true)
+                .minValue(0)
+                .maxValue(0)
+                .barColor(colorMode.getPrimaryColor())
+                .unitColor(colorMode.getSecondaryColor())
+                .titleColor(colorMode.getSecondaryColor())
+                .valueColor(colorMode.getPrimaryColor())
+                .value(0.0)
+                .build();
+
+        this.getChildren().addAll(gauge);
+        this.setSpacing(.5);
+        this.setAlignment(Pos.CENTER);
+    }
+
     /**
      * @param colorMode the color mode settings to be used in this Graph
      * @param data      the data this graph will read from.
      *                  sets the maximum size of this graph to 190 by default
      */
-    public CircleGraph(ColorMode colorMode, IData<Double> data) {
-        this(colorMode, data, 130, 40);
+    public void initialize(ColorMode colorMode, IData<Double> data) {
+        initialize(colorMode, data, 130, 40);
     }
 
     /**
@@ -37,7 +66,7 @@ public class CircleGraph extends VBox {
      * @param data          the data this graph will read from.
      * @param maxSideLength the maximum size of this graph
      */
-    public CircleGraph(ColorMode colorMode, IData<Double> data, double maxSideLength, double minSideLength) {
+    public void initialize(ColorMode colorMode, IData<Double> data, double maxSideLength, double minSideLength) {
         this.colorMode = colorMode;
         this.data = data;
 
@@ -51,7 +80,7 @@ public class CircleGraph extends VBox {
                 .scaleDirection(ScaleDirection.CLOCKWISE)
                 .thresholdVisible(true)
                 .thresholdColor(Color.YELLOW)
-                .threshold(15)
+                .threshold(0)
                 .checkThreshold(true)
                 .minValue(0)
                 .maxValue(0)
@@ -59,9 +88,10 @@ public class CircleGraph extends VBox {
                 .unitColor(colorMode.getSecondaryColor())
                 .titleColor(colorMode.getSecondaryColor())
                 .valueColor(colorMode.getPrimaryColor())
-                .value(0)
+                .value(data.getValue())
                 .build();
 
+        this.getChildren().remove(0);
         this.getChildren().addAll(gauge);
         this.setSpacing(.5);
         this.setAlignment(Pos.CENTER);
@@ -74,9 +104,7 @@ public class CircleGraph extends VBox {
             gauge.setUnitColor(colorMode.getSecondaryColor());
         });
 
-        data.addListener((observable, old, newValue) -> {
-            gauge.setValue(newValue);
-        });
+        data.addListener((observable, old, newValue) -> gauge.setValue(newValue));
     }
 
 
@@ -94,7 +122,7 @@ public class CircleGraph extends VBox {
         gauge.setCheckThreshold(true);
         gauge.setMinValue(0);
         gauge.setMaxValue(100);
-        gauge.setValue(0);
+        gauge.setValue(data.getValue());
 
     }
 
@@ -112,6 +140,8 @@ public class CircleGraph extends VBox {
             max = ((NumericalDataValue) data).getMaxValue();
             min = ((NumericalDataValue) data).getMinValue();
         }
+
+        gauge.setValue(data.getValue());
 
         createCustomRadialGraphBox(title, unit, max, min);
     }
@@ -134,7 +164,8 @@ public class CircleGraph extends VBox {
         gauge.setCheckThreshold(true);
         gauge.setMinValue(minVal);
         gauge.setMaxValue(maxVal);
-        gauge.setValue(0);
+
+        gauge.setValue(data.getValue());
 
     }
 

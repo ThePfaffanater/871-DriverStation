@@ -17,19 +17,25 @@ public class NumberDisplay extends VBox {
     private Label nameDisplay;
     private DecimalFormat df;
 
-    public NumberDisplay(ColorMode colorMode, IData<Double> data, String name) {
+
+    public NumberDisplay() {
+        nameDisplay = new Label("Not initialized: ");
+        textArea = new Label("0/0");
+
+        this.getChildren().addAll(nameDisplay, textArea);
+        this.setAlignment(Pos.CENTER);
+        this.setPadding(new Insets(3, 3, 3, 3));
+    }
+
+    public void initialize(ColorMode colorMode, IData<Double> data, String name) {
         this.colorMode = colorMode;
         this.data = data;
 
-        nameDisplay = new Label(name + ": ");
-        textArea = new Label(Double.toString(round(data.getValue(), 2)));
+        nameDisplay.setText(name + ": ");
+        textArea.setText(Double.toString(round(data.getValue(), 2)));
 
         textArea.setTextFill(colorMode.getSecondaryColor());
         nameDisplay.setTextFill(colorMode.getSecondaryColor());
-
-        super.getChildren().addAll(nameDisplay, textArea);
-        super.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(3, 3, 3, 3));
 
         //Updates:
         colorMode.addListener(observable -> {

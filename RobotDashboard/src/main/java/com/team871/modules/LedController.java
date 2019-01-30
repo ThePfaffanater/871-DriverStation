@@ -4,6 +4,7 @@ import com.team871.config.Style.ColorMode;
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ColorPicker;
@@ -23,14 +24,8 @@ public class LedController extends VBox {
     private boolean init;
     private boolean lastDarkMode;
 
-    public LedController(ColorMode colorMode, String title, NetworkTableEntry ledBrightnessKey, NetworkTableEntry ledColorKey) {
-        this.colorMode = colorMode;
-        this.ledBrightnessKey = ledBrightnessKey;
-        this.ledColorKey = ledColorKey;
-        this.lastDarkMode = !colorMode.isDarkMode();
-        this.init = false;
-
-        titleText = new Label(title + ": ");
+    public LedController() {
+        titleText = new Label("not Initialized: ");
         brightnessSlider = new Slider();
         brightnessSlider.getStylesheets().add("slider_dark.css");
         colorPicker = new ColorPicker();
@@ -38,14 +33,37 @@ public class LedController extends VBox {
         colorPicker.setScaleY(.75);
         colorPicker.setScaleZ(.75);
 
-        colorPicker.setOnAction((ActionEvent event) -> {
-            ledColorKey.setString(colorPicker.getValue().toString());
-            System.out.println(colorPicker.getValue().toString());
-        });
+        this.getChildren().addAll(titleText, brightnessSlider, colorPicker);
+        this.setAlignment(Pos.CENTER_LEFT);
+        this.setPadding(new Insets(3, 3, 3, 3));
+    }
+
+    @FXML
+    public void initialize() {
+        titleText = new Label("not Initialized: ");
+        brightnessSlider = new Slider();
+        brightnessSlider.getStylesheets().add("slider_dark.css");
+        colorPicker = new ColorPicker();
+
 
         this.getChildren().addAll(titleText, brightnessSlider, colorPicker);
         this.setAlignment(Pos.CENTER_LEFT);
         this.setPadding(new Insets(3, 3, 3, 3));
+    }
+
+    public void initialize(ColorMode colorMode, String title, NetworkTableEntry ledBrightnessKey, NetworkTableEntry ledColorKey) {
+        this.colorMode = colorMode;
+        this.ledBrightnessKey = ledBrightnessKey;
+        this.ledColorKey = ledColorKey;
+        this.lastDarkMode = !colorMode.isDarkMode();
+        this.init = false;
+
+        titleText.setText(title + ":");
+
+        colorPicker.setOnAction((ActionEvent event) -> {
+            ledColorKey.setString(colorPicker.getValue().toString());
+            System.out.println(colorPicker.getValue().toString());
+        });
 
         //Updates:
         brightnessSlider.valueProperty().addListener((observable, old, newValue) -> {

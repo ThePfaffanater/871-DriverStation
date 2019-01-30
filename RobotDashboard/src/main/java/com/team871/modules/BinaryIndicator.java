@@ -1,6 +1,5 @@
 package com.team871.modules;
 
-
 import com.team871.config.Style.ColorMode;
 import com.team871.util.data.IData;
 import javafx.geometry.Insets;
@@ -9,73 +8,69 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
 
-
+/**
+ * @author T3Pfaffe on 1/29/2019.
+ * @project DriverStation
+ */
 public class BinaryIndicator extends VBox {
 
-    private javafx.scene.shape.Circle Circle;
+    private Circle circle;
     private Label label;
-    private ColorMode colorMode;
-    private IData<Boolean> data;
-    private String title;
 
-    /**
-     * @param colorMode colorMode settings to be used.
-     * @param title     the title of the Circle Indicator
-     */
-    public BinaryIndicator(ColorMode colorMode, IData<Boolean> data, String title) {
-        this.colorMode = colorMode;
-        this.title = title;
-        this.data = data;
+    public BinaryIndicator() {
 
+        circle = new Circle();
+        circle.setRadius(25);
+        circle.setFill(Color.BLUE);
 
-        label = new Label(this.title + ":");
-        label.setTextFill(colorMode.getSecondaryColor());
+        label = new Label("Title");
         label.setAlignment(Pos.CENTER);
         label.setPadding(new Insets(5, 0, 3, 0));
 
-        Label spacer = new Label("   ");
-        spacer.setFont(Font.font("Arial", 8));
-
-        Circle = new Circle();
-        Circle.setRadius(25);
-
-        setNeutral();
-
-        this.getChildren().addAll(label, Circle, spacer);
-        this.setPadding(new Insets(3, 3, 3, 3));
+        this.getChildren().addAll(label, circle);
         this.setAlignment(Pos.CENTER);
 
-        //Updates:
-        colorMode.addListener(observable -> {
-            label.setTextFill(colorMode.getSecondaryColor());
-        });
-
-        data.addListener((observable, old, newValue) -> {
-            setState(newValue);
-        });
-
-
+        setNeutral();
     }
 
     /**
-     * Sets the Indicator to Off position (RED color)
+     * Will display a true or false status
+     *
+     * @param colorMode changes the font colors to match colorMode
+     * @param title     the title/name of the indicator
+     * @param data      the value this indicator will update to.
+     */
+    public void initialize(ColorMode colorMode, String title, IData<Boolean> data) {
+
+        label.setText(title);
+        label.setTextFill(colorMode.getSecondaryColor());
+
+        //Updates:
+        colorMode.addListener(observable -> label.setTextFill(colorMode.getSecondaryColor()));
+
+        setState(data.getValue());
+
+        data.addListener((observable, old, newValue) -> setState(newValue));
+    }
+
+
+    /**
+     * Sets the Indicator to On (GREEN color) or Off position (RED color)
      */
     private void setState(boolean on) {
         if (on)
-            Circle.setFill(Color.GREEN);
+            circle.setFill(Color.GREEN);
 
         else
-            Circle.setFill(Color.RED);
+            circle.setFill(Color.RED);
     }
 
+    /**
+     * Sets the indicator to neutral (YELLOW color)
+     */
     private void setNeutral() {
-        Circle.setFill(Color.YELLOW);
+        circle.setFill(Color.YELLOW);
     }
-
-
-
 
 }
-

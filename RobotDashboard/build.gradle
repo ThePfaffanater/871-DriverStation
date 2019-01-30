@@ -5,7 +5,7 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2019.1.1"
 }
 
-def MAIN_CLASS = "com.team871.GraphicalMain"
+def MAIN_CLASS = "com.team871.FXMLGraphicalMain"
 
 application {
     mainClassName = MAIN_CLASS
@@ -15,7 +15,7 @@ application {
 
 javafx {
    
-    modules = [ 'javafx.controls', 'javafx.media' ,'javafx.graphics']
+    modules = [ 'javafx.controls', 'javafx.media' ,'javafx.graphics', 'javafx.fxml', ]
     
 }
 

@@ -53,7 +53,7 @@ public class BinaryDataValue implements IData<Boolean> {
 
     private void notifyChangeListeners(boolean oldValue) {
         for (ChangeListener<? super Boolean> changeListener : changeListeners) {
-            //changeListener.changed(this, oldValue, this.value);
+            changeListener.changed(this, oldValue, this.value);
         }
     }
 

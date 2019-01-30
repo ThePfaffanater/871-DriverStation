@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.team871.modules.BinaryIndicator?>
+<?import com.team871.modules.CircleGraph?>
+<?import com.team871.modules.PidTuner?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../dark_theme.css"
+            xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.team871.controllers.TestScreenController">
+    <children>
+        <HBox>
+            <CircleGraph fx:id="circleGraph1" layoutX="6.0" layoutY="31.0" prefHeight="67.0" prefWidth="66.0"/>
+            <BinaryIndicator fx:id="binaryIndicator1" layoutX="14.0" layoutY="98.0"/>
+            <PidTuner fx:id="pid1"/>
+            <JFXButton/>
+        </HBox>
+    </children>
+</AnchorPane>

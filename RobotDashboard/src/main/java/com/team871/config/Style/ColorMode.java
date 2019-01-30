@@ -13,6 +13,7 @@ public class ColorMode implements ObservableValue<ColorMode> {
 
 
     private List<InvalidationListener> invalidationListeners;
+    private List<ChangeListener<? super ColorMode>> changeListeners;
 
     private Boolean darkMode = false;
     private Color backColor;
@@ -38,6 +39,7 @@ public class ColorMode implements ObservableValue<ColorMode> {
         this.primaryColor = primaryColor;
 
         invalidationListeners = new ArrayList<>();
+        changeListeners = new ArrayList<>();
     }
 
     /**
@@ -89,6 +91,8 @@ public class ColorMode implements ObservableValue<ColorMode> {
     protected void setPrimaryColor(Color newPrimaryColor) {
         this.primaryColor = newPrimaryColor;
         notifyInvalidationListeners();
+        notifyChangeListeners(null);
+
     }
 
     /**
@@ -97,6 +101,7 @@ public class ColorMode implements ObservableValue<ColorMode> {
     protected void changeBaseColor() {
         darkMode = !darkMode;
         notifyInvalidationListeners();
+        notifyChangeListeners(null);
     }
 
 
@@ -106,19 +111,27 @@ public class ColorMode implements ObservableValue<ColorMode> {
         }
     }
 
+    private void notifyChangeListeners(ColorMode oldValue) {
+        for (ChangeListener<? super ColorMode> changeListener : changeListeners) {
+            changeListener.changed(this, oldValue, this);
+        }
+    }
+
+
+    //Listeners:
     @Override
     public void addListener(ChangeListener<? super ColorMode> listener) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        changeListeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(InvalidationListener listener) {
+        invalidationListeners.remove(listener);
     }
 
     @Override
     public void removeListener(ChangeListener<? super ColorMode> listener) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        invalidationListeners.add(listener);
+        removeListener(listener);
     }
 
     @Override
@@ -127,7 +140,8 @@ public class ColorMode implements ObservableValue<ColorMode> {
     }
 
     @Override
-    public void removeListener(InvalidationListener listener) {
-        invalidationListeners.remove(listener);
+    public void addListener(InvalidationListener listener) {
+        invalidationListeners.add(listener);
     }
+
 }
