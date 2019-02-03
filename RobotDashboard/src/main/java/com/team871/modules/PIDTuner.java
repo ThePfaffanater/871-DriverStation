@@ -3,16 +3,14 @@ package com.team871.modules;
 import com.team871.util.data.NetNumericalDataValue;
 import com.team871.util.data.NumericalDataValue;
 import edu.wpi.first.networktables.NetworkTable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
-/**
- * @author T3Pfaffe on 1/30/2019.
- * @project DriverStation
- */
-public class PidTuner extends GridPane {
+public class PIDTuner extends VBox {
 
     //TODO: get actual key values from PID class on robot
     private final String P_Key = "P_Val";
@@ -44,7 +42,7 @@ public class PidTuner extends GridPane {
     private NumericalDataValue setPointVal;
     private NumericalDataValue errorVal;
 
-    public PidTuner() {
+    public PIDTuner() {
         mainTitle = new Label("Un initialized: ");
 
         pTitle = new Label("P: ");
@@ -70,12 +68,16 @@ public class PidTuner extends GridPane {
         errorControl.setEditable(false);
 
 
-        this.addRow(0, pTitle, pControl);
-        this.addRow(1, iTitle, iControl);
-        this.addRow(2, dTitle, dControl);
-        this.addRow(3, setPoint, setPointControl);
-        this.addRow(4, error, errorControl);
-        this.setAlignment(Pos.CENTER_RIGHT);
+        GridPane dataGrid = new GridPane();
+        dataGrid.addRow(0, pTitle, pControl);
+        dataGrid.addRow(1, iTitle, iControl);
+        dataGrid.addRow(2, dTitle, dControl);
+        dataGrid.addRow(3, setPoint, setPointControl);
+        dataGrid.addRow(4, error, errorControl);
+        dataGrid.setAlignment(Pos.CENTER_LEFT);
+        this.getChildren().addAll(mainTitle, dataGrid);
+        this.setAlignment(Pos.CENTER_LEFT);
+        this.setPadding(new Insets(5, 5, 5, 5));
     }
 
     public void initialize(NetworkTable pidObject) {
@@ -90,6 +92,8 @@ public class PidTuner extends GridPane {
         pControl.setText("" + pVal.getValue());
         iControl.setText("" + iVal.getValue());
         dControl.setText("" + dVal.getValue());
+        setPointControl.setText("" + dVal.getValue());
+        errorControl.setText(""    + dVal.getValue());
 
         //Updates:
         pControl.setOnAction(event -> {
@@ -104,13 +108,14 @@ public class PidTuner extends GridPane {
         iControl.setOnAction(event -> pidObject.getEntry(I_Key).setNumber(Double.parseDouble(iControl.getText())));
         iVal.addListener((observable, old, newValue) -> iControl.setText("" + newValue.doubleValue()));
 
-
         dControl.setOnAction(event -> pidObject.getEntry(D_Key).setNumber(Double.parseDouble(dControl.getText())));
         dVal.addListener((observable, old, newValue) -> dControl.setText("" + newValue.doubleValue()));
 
+        setPointControl.setOnAction(event -> pidObject.getEntry(SETPOINT_Key).setNumber(Double.parseDouble(setPointControl.getText())));
         setPointVal.addListener(((observable, oldValue, newValue) -> setPoint.setText("" + newValue)));
 
         errorVal.addListener(((observable, oldValue, newValue) -> error.setText("" + newValue)));
+        //error val only updates from the network and is not mutable from driverStation
     }
 
 }

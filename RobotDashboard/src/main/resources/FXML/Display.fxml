@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.team871.controllers.DisplayScreenController">
+    <left>
+        <AnchorPane prefHeight="400.0" prefWidth="31.0" styleClass="root" BorderPane.alignment="CENTER">
+            <effect>
+                <DropShadow/>
+            </effect>
+            <children>
+                <Button fx:id="driveBtn" mnemonicParsing="false" onAction="#driveBtnAction" prefHeight="25.0"
+                        prefWidth="26.0" text="Drive"/>
+                <Button fx:id="debugBtn" layoutY="25.0" mnemonicParsing="false" onAction="#debugBtnAction"
+                        prefHeight="25.0" prefWidth="26.0" text="Debug"/>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <TabPane prefHeight="400.0" prefWidth="590.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <tabs>
+                <Tab text="Debug">
+                    <content>
+                        <fx:include source="testScreen.fxml"/>
+                    </content>
+                </Tab>
+                <Tab text="Not debug">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>

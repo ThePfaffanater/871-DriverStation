@@ -7,7 +7,7 @@ import com.team871.config.network.AbstractNetConfig;
 import com.team871.config.network.ArmstrongNetConfig;
 import com.team871.modules.BinaryIndicator;
 import com.team871.modules.CircleGraph;
-import com.team871.modules.PidTuner;
+import com.team871.modules.PIDTuner;
 import com.team871.util.data.BinaryDataValue;
 import com.team871.util.data.NumericalDataValue;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -20,11 +20,11 @@ import javafx.fxml.FXML;
 public class TestScreenController {
 
     @FXML
-    protected BinaryIndicator binaryIndicator1;
+    private BinaryIndicator binaryIndicator1;
     @FXML
-    protected CircleGraph circleGraph1;
+    private CircleGraph circleGraph1;
     @FXML
-    protected PidTuner pid1;
+    private PIDTuner pid1;
 
     private IDashboardConfig config;
     private NetworkTableInstance netTable;
@@ -45,8 +45,7 @@ public class TestScreenController {
 
         circleGraph1.initialize(colorMode, new NumericalDataValue(22.));
         circleGraph1.createBatteryRadialGraphBox();
-
-        //pid1.initialize(netTable.getTable("LOL_IDK"));
+        pid1.initialize(netTable.getTable("LOL_IDK"));
 
     }
 }
