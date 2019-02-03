@@ -92,8 +92,14 @@ public class PidTuner extends GridPane {
         dControl.setText("" + dVal.getValue());
 
         //Updates:
-        pControl.setOnAction(event -> pidObject.getEntry(P_Key).setNumber(Double.parseDouble(pControl.getText())));
-        pVal.addListener((observable, old, newValue) -> pControl.setText("" + newValue.doubleValue()));
+        pControl.setOnAction(event -> {
+            System.out.println("P change");
+            pidObject.getEntry(P_Key).setNumber(Double.parseDouble(pControl.getText()));
+        });
+        pVal.addListener((observable, old, newValue) -> {
+
+            pControl.setText("" + newValue.doubleValue());
+        });
 
         iControl.setOnAction(event -> pidObject.getEntry(I_Key).setNumber(Double.parseDouble(iControl.getText())));
         iVal.addListener((observable, old, newValue) -> iControl.setText("" + newValue.doubleValue()));

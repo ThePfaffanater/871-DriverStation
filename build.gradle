@@ -3,6 +3,10 @@ allprojects {
 
     repositories {
         mavenCentral()
+
+        flatDir {
+         dirs "$rootDir/lib"
+        }
     }
 
     apply plugin: 'idea'
@@ -11,7 +15,7 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
-    version = '1.0'
+    version = '1.0-SNAPSHOT'
     sourceCompatibility = 1.8
 
 }

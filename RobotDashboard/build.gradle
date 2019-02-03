@@ -1,9 +1,13 @@
+
 plugins {
     id "java"
     id "application"
     id 'org.openjfx.javafxplugin' version '0.0.6'
     id "edu.wpi.first.GradleRIO" version "2019.1.1"
 }
+
+group 'com.team871'
+version '1.0-SNAPSHOT'
 
 def MAIN_CLASS = "com.team871.FXMLGraphicalMain"
 
@@ -14,13 +18,11 @@ application {
 
 
 javafx {
-   
+
     modules = [ 'javafx.controls', 'javafx.media' ,'javafx.graphics', 'javafx.fxml', ]
-    
+
 }
 
-group 'com.team871'
-version 'unspecified'
 
 sourceCompatibility = 1.8
 
@@ -32,10 +34,9 @@ repositories {
 
     }
 
-
-    flatDir {
-        dirs "$rootDir/lib"
-    }
+//    flatDir {
+//        dirs "$rootDir/lib"
+//    }
 }
 
 
