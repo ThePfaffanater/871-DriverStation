@@ -20,11 +20,11 @@ import javafx.fxml.FXML;
 public class TestScreenController {
 
     @FXML
-    protected BinaryIndicator binaryIndicator1;
+    private BinaryIndicator binaryIndicator1;
     @FXML
-    protected CircleGraph circleGraph1;
+    private CircleGraph circleGraph1;
     @FXML
-    protected PidTuner pid1;
+    private PidTuner pid1;
 
     private IDashboardConfig config;
     private NetworkTableInstance netTable;
@@ -45,8 +45,7 @@ public class TestScreenController {
 
         circleGraph1.initialize(colorMode, new NumericalDataValue(22.));
         circleGraph1.createBatteryRadialGraphBox();
-
-        //pid1.initialize(netTable.getTable("LOL_IDK"));
+        pid1.initialize(netTable.getTable("LOL_IDK"));
 
     }
 }

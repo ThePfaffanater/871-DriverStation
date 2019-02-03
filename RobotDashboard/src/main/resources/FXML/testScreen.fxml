@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.team871.modules.BinaryIndicator?>
 <?import com.team871.modules.CircleGraph?>
 <?import com.team871.modules.PidTuner?>
@@ -13,8 +12,7 @@
         <HBox>
             <CircleGraph fx:id="circleGraph1" layoutX="6.0" layoutY="31.0" prefHeight="67.0" prefWidth="66.0"/>
             <BinaryIndicator fx:id="binaryIndicator1" layoutX="14.0" layoutY="98.0"/>
-            <PidTuner fx:id="pid1"/>
-            <JFXButton/>
+            <PidTuner fx:id="pid1" />
         </HBox>
     </children>
 </AnchorPane>
