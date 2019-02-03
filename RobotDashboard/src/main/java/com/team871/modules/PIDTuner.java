@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-public class PidTuner extends VBox {
+public class PIDTuner extends VBox {
 
     //TODO: get actual key values from PID class on robot
     private final String P_Key = "P_Val";
@@ -42,7 +42,7 @@ public class PidTuner extends VBox {
     private NumericalDataValue setPointVal;
     private NumericalDataValue errorVal;
 
-    public PidTuner() {
+    public PIDTuner() {
         mainTitle = new Label("Un initialized: ");
 
         pTitle = new Label("P: ");
