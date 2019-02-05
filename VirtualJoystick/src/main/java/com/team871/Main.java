@@ -1,10 +1,13 @@
 package com.team871;
 
-/**
- * @author T3Pfaffe on 2/1/2019.
- * @project DriverStation
- */
-public class Main {
+import javafx.application.Application;
+import javafx.stage.Stage;
 
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stage) {
+
+    }
 
 }
