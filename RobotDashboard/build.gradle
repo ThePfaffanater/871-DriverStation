@@ -33,7 +33,6 @@ repositories {
         url 'http://first.wpi.edu/FRC/roborio/maven/release'
 
     }
-
 //    flatDir {
 //        dirs "$rootDir/lib"
 //    }
@@ -43,8 +42,8 @@ repositories {
 dependencies {
     compile 'com.jfoenix:jfoenix:9.0.6',
             'eu.hansolo:Medusa:8.0',
-             wpi.deps.wpilib()
-    
+            wpi.deps.wpilib()
+
     //compile 'edu.wpi.first.ntcore/ntcore-jni:2019.2.1.ntcore-jni-2019.2.1-all'
 
     compile name: 'ntcore-jni-2019.2.1-all'

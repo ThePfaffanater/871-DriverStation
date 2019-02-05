@@ -1,8 +1,6 @@
-
 plugins {
     id "java"
-    id "application"
-    id 'com.stehno.natives' version '0.3.1'
+
 }
 
 group 'com.team871'

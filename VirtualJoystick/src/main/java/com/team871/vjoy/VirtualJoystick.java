@@ -1,7 +1,7 @@
 package com.team871.vjoy;
 
-import redlaboratory.jvjoyinterface.VJoy;
-import redlaboratory.jvjoyinterface.VjdStat;
+import com.team871.jvjoyinterface.VJoy;
+import com.team871.jvjoyinterface.VjdStat;
 
 public class VirtualJoystick extends VJoy {
 
