@@ -1,5 +1,7 @@
 package com.team871.jvjoyinterface;
 
+import java.rmi.UnexpectedException;
+
 public class VJoy {
 
     static {
@@ -7,15 +9,16 @@ public class VJoy {
             String architecture = System.getProperty("sun.arch.data.model");
             System.out.println("arch = " + architecture);
             if (architecture.equals("32")) {
-                System.loadLibrary("32/vJoyInterface");
-                System.loadLibrary("32/libJvJoyInterfaceNative");
+                System.loadLibrary("lib/natives/32/libJvJoyInterfaceNative");
+                System.loadLibrary("lib/natives/32/vJoyInterface");
             } else if (architecture.equals("64")) {
-                System.loadLibrary("64/vJoyInterface");
-                System.loadLibrary("64/libJvJoyInterfaceNative");
+                System.loadLibrary("vJoyInterface");
+                System.loadLibrary("libJvJoyInterfaceNative");
             } else {
-//				throw new UnexpectedException("Unexpected architecture: " + architecture);
+                throw new UnexpectedException("Unexpected architecture: " + architecture);
             }
-        } catch (SecurityException e) {
+        } catch (SecurityException | UnexpectedException e) {
+            System.out.println("FRICK IT DID NOT WORK");
             e.printStackTrace();
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();

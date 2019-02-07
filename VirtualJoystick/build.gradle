@@ -1,5 +1,7 @@
 plugins {
     id "java"
+    id "application"
+    id 'org.openjfx.javafxplugin' version '0.0.6'
 
 }
 
@@ -8,10 +10,15 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
-def MAIN_CLASS = 'com.team871.Main'
+def MAIN_CLASS = 'com.team871.vjoy.JvJoyTest'
 
 application {
     mainClassName = MAIN_CLASS
+}
+
+javafx {
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.graphics', 'javafx.media']
+
 }
 
 repositories {
@@ -27,6 +34,16 @@ dependencies {
 //    compile name: '/natives/64/vJoyInterface.dll'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': MAIN_CLASS
+        )
+    }
+}
+
 
 manifest {
     attributes('Main-Class': MAIN_CLASS)

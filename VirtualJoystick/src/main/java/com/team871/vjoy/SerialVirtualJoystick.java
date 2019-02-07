@@ -8,6 +8,7 @@ import jssc.SerialPortException;
 
 public class SerialVirtualJoystick {
 
+    private final String portName;
     private SerialPort serialPort;
     private VirtualJoystick stickJoy;
 
@@ -21,13 +22,13 @@ public class SerialVirtualJoystick {
     private long lastRecieve = System.currentTimeMillis();
     private StringBuilder message = new StringBuilder();
 
-    public SerialVirtualJoystick(String port) throws SerialPortException {
-        connect(port);
-        start(port);
+    public SerialVirtualJoystick(String portName) {
+        this.portName = portName;
     }
 
 
-    public void start(String port) {
+    public void start() throws SerialPortException {
+        connect(portName);
 
         Thread t = new Thread(() -> {
             try {
@@ -37,14 +38,14 @@ public class SerialVirtualJoystick {
             while (true) {
 
                 if (System.currentTimeMillis() - lastRecieve > 3000) {
-                    System.err.println("Lost Connection to " + port + "! Retrying Connection...");
+                    System.err.println("Lost Connection to " + portName + "! Retrying Connection...");
                     try {
                         if (serialPort.isOpened()) serialPort.closePort();
                     } catch (SerialPortException e1) {
                         e1.printStackTrace();
                     }
                     try {
-                        connect(port);
+                        connect(portName);
                     } catch (SerialPortException e) {
                         e.printStackTrace();
                     }
@@ -199,4 +200,38 @@ public class SerialVirtualJoystick {
 
 
     }
+
+    public double getLastA1() {
+        return lastA1;
+    }
+
+    public double getLastA2() {
+        return lastA2;
+    }
+
+    public double getLastX() {
+        return lastX;
+    }
+
+    public double getLastY() {
+        return lastY;
+    }
+
+    public long getLastRecieve() {
+        return lastRecieve;
+    }
+
+    public boolean isLastC() {
+        return lastC;
+    }
+
+    public boolean isLastZ() {
+        return lastZ;
+    }
+
+    public boolean isCalibrating() {
+        return calibrating;
+    }
+
+
 }
